@@ -4,26 +4,28 @@ import MoviesList from "./components/MoviesList";
 import "./App.css";
 
 function App() {
-  const [ movies, setMovies] = useState([]);
+  const [movies, setMovies] = useState([]);
 
-  function fetchMovieshandler() {
-    fetch(" https://swapi.dev/api/films/ ")
-      .then((response) => {
-        return response.json();
-      })
-      .then((data) => {
-        const transformedMovies = data.results.map(movieData => {
-          return {
-            id: movieData.episode_id,
-            title: movieData.title,
-            openingText: movieData.opening_crawl,
-            releaseDate : movieData.release_date,
-          }
-        })
+  async function fetchMovieshandler() {
+    const response = await fetch(" https://swapi.dev/api/films/ ");
+    //converting data to json
+    // .then((response) => {
+    //   return response.json();
+    // })
 
+    const data = await response.json();
 
-        setMovies(transformedMovies);
-      });
+    //storing converted json data
+    const transformedMovies = data.results.map((movieData) => {
+      return {
+        id: movieData.episode_id,
+        title: movieData.title,
+        openingText: movieData.opening_crawl,
+        releaseDate: movieData.release_date,
+      };
+    });
+
+    setMovies(transformedMovies);
   }
 
   return (
